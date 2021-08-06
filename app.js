@@ -11,7 +11,7 @@ morgan.token('body', req => {
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-const blogsRoputer = require('./controllers/blogs')
+const blogsRouter = require('./controllers/blogs')
 
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -19,6 +19,6 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 app.use(cors())
 app.use(express.json())
 
-app.use('', blogsRoputer)
+app.use('', blogsRouter)
 
 module.exports = app
