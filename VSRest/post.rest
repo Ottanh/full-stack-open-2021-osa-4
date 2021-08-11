@@ -1,9 +1,42 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBla2thIiwiaWQiOiI2MTE0MWYwODhkYWJiYjgzMTRiNzU1NGQiLCJpYXQiOjE2Mjg3MDg5MjN9.SD_ayfdOdSrGS64YC4x52s3Pv8Zh90wmQyHdUQudB-s
 
 {
-    "title": "String",
-  "author": "String",
-  "url": "String",
-  "likes": 3
+  "title": "Etana",
+  "author": "Varis",
+  "url": "Kala.fi",
+  "likes": 9999
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username" : "Pekka",
+  "name": "Musta",
+  "password": "skhk"
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username" : "Pekka",
+  "name": "Musta",
+  "password": "skhk"
+}
+
+###
+
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "Pekka",
+  "password": "skhk"
 }

@@ -4,6 +4,9 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+
 const initialBlogs = [
   {
     title: "React patterns",
@@ -25,6 +28,9 @@ beforeEach(async () => {
   await blogObject.save()
   blogObject = new Blog(initialBlogs[1])
   await blogObject.save()
+
+  
+
 })
 
 
@@ -50,6 +56,14 @@ test('blogs identified by id', async () => {
 
 test('blog added with POST', async () => {
 
+  const login = await api.post('/api/login')
+    .send({
+      username: "Pekka",
+      password: "skhk"
+    })
+
+  const token = login.body.token
+
   const newBlog = {
     title: "First class tests",
     author: "Robert C. Martin",
@@ -58,9 +72,10 @@ test('blog added with POST', async () => {
   }
 
   await api.post('/api/blogs')
-  .send(newBlog)
-  .expect(201)
-  .expect('Content-Type', /application\/json/)
+    .set('Authorization', `bearer ${token}`)
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
 
   const response = await api.get('/api/blogs')
   const contents = response.body.map(r => r.title)
@@ -71,7 +86,15 @@ test('blog added with POST', async () => {
   )
 })
 
-test('trying to add blgo with missing title and url returns 400', async () => {
+test('add blog with missing title and url returns 400', async () => {
+
+  const login = await api.post('/api/login')
+  .send({
+    username: "Pekka",
+    password: "skhk"
+  })
+
+const token = login.body.token
 
   const newBlog = {
     author: "Robert C. Martin",
@@ -79,6 +102,7 @@ test('trying to add blgo with missing title and url returns 400', async () => {
   }
 
   await api.post('/api/blogs')
+  .set('Authorization', `bearer ${token}`)
   .send(newBlog)
   .expect(400)
 })
@@ -86,6 +110,12 @@ test('trying to add blgo with missing title and url returns 400', async () => {
 test('if likes has no value then there is 0 likes', async () =>{
   const response = await api.get('/api/blogs')
   expect(response.body[1].likes).toBe(0)
+})
+
+test('add blog with no token return 401', async () => {
+  await api.post('/api/blogs')
+    .send({})
+    .expect(401)
 })
 
 afterAll(() => {
