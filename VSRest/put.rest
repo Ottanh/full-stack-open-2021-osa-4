@@ -1,9 +1,8 @@
-PUT http://localhost:3003/api/blogs/610d384b1bb8ee251c07d994
+PUT http://localhost:3003/api/blogs/61211d93e6255d09e13d7ea0
 Content-Type: application/json
 
 {
-  "title": "Sammako",
-  "author": "Viisas sammakko",
-  "url": "Sammakot.fi",
-  "likes": 3
+
+  "likes": 1
+
 }

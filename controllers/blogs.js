@@ -69,15 +69,12 @@ blogsRouter.get('/api/blogs/:id', async (request, response, next) => {
 blogsRouter.put('/api/blogs/:id', async (request, response, next) => {
   const body = request.body
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-    user: body.user
-  }
+  const blog = await Blog.findById(request.params.id)
+  blog.likes = request.body.likes
 
+  console.log(blog.toJSON())
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .populate('user', { username: 1, name: 1 })
   response.json(updatedBlog)
   
 })
